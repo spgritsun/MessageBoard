@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+{#        {% load custom_tags %}#}
+        <title>
+            {% block title %}
+            {{ flatpage.content }}
+            {% endblock title %}
+        </title>
+        <!-- Favicon-->
+        <!-- Core theme CSS (includes Bootstrap)-->
+        {% load static %}
+        <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+    </head>
+    <body>
+        <!-- Responsive navbar-->
+{#        {% load cache %} <!-- Загружаем кэширование -->#}
+{#        {% cache 30 navbar %} <!-- Кэшируем отдельный блок на 30 секунд -->#}
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+           <div class="container">
+               <a class="navbar-brand" href="#">MessageBoard</a>
+               <button class="navbar-toggler" type="button" data-toggle="collapse"
+                       data-target="#navbarResponsive"
+                       aria-controls="navbarResponsive" aria-expanded="false"
+                       aria-label="Toggle navigation">
+                   <span class="navbar-toggler-icon"></span>
+               </button>
+               <div class="collapse navbar-collapse" id="navbarResponsive">
+                   <ul class="navbar-nav ml-auto">
+{#                       <li class="nav-item active">#}
+{#                           <a class="nav-link" href="/news/{% latest_news_pk %}">Последняя новость#}
+{#                               <span class="sr-only"></span>#}
+{#                           </a>#}
+{#                       </li>#}
+                       <li class="nav-item">
+                           <a class="nav-link" href="/news/">Все новости</a>
+                       </li>
+                       <li class="nav-item">
+                           <a class="nav-link" href="/news/search/">Поиск по новостям</a>
+                       </li>
+                       <li class="nav-item">
+                           <a class="nav-link" href="/news/create/">Создать новость</a>
+                       </li>
+                       <li class="nav-item">
+                           <a class="nav-link" href="/articles/">Все статьи</a>
+                       </li>
+                       <li class="nav-item">
+                           <a class="nav-link" href="/articles/create/">Создать статью</a>
+                       </li>
+                       <li class="nav-item">
+                           <a class="nav-link" href="/posts/">Все посты</a>
+                       </li>
+                   </ul>
+               </div>
+               <div class="collapse navbar-collapse">
+                   <ul class="navbar-nav ml-auto">
+                       <li class="nav-item">
+                          {% if user.is_authenticated %}
+                            <a class="nav-link " href="/login/">{{request.user.username}}</a>
+                          {% else %}
+                            <a class="nav-link" href="/login/">Войти</a>
+                          {% endif %}
+                       </li>
+                   </ul>    
+               </div>    
+           </div>
+        </nav>
+{#        {% endcache %}#}
+        <!-- Page content-->
+        <div class="container">
+           <div class="row">
+               <div class="col-lg-12 text-center">
+                   {% block content %}
+                   {{ flatpage.content }}
+                   {% endblock content %}
+               </div>
+           </div>
+        </div>
+    </body>
+</html>
