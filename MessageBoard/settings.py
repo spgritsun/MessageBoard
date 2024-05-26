@@ -48,6 +48,10 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.yandex',
     'allauth.socialaccount.providers.vk',
+    'django_celery_results',
+    'django_celery_beat',
+    'main'
+
 ]
 
 MIDDLEWARE = [
@@ -155,6 +159,15 @@ LOGIN_REDIRECT_URL = '/login/'
 ACCOUNT_FORMS = {'signup': 'auth.models.BasicSignupForm'}
 
 SITE_URL = 'http://127.0.0.1:8000'
+
+
+CELERY_BROKER_URL = 'redis://:KV85sYlBu86ZO1bPVZDlAAsCNUvMe0Op@redis-17910.c304.europe-west1-2.gce.redns.redis-cloud' \
+                    '.com:17910 '
+CELERY_RESULT_BACKEND = 'django-db'
+
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
 
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
