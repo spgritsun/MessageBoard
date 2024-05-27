@@ -17,8 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.contrib.auth.views import LogoutView
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
 from auth.views import PersonalView
+from main import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,4 +30,9 @@ urlpatterns = [
     path('logout/',
          LogoutView.as_view(template_name='auth/logout.html'),
          name='logout'),
+    path('', include('main.urls')),
 ]
+
+urlpatterns += [
+                   path("ckeditor5/", include('django_ckeditor_5.urls')),
+               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

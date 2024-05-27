@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{#{% load custom_filters %}#}
+<!-- Название у нас будет posts -->
+{% block title %}
+Posts
+{% endblock title %}
+
+<!-- В контенте на странице мы выводим все посты-->
+{% block content %}
+   <h3>Все посты</h3>
+
+   <hr>
+   <!-- Выводим посты, только если они есть с помощью тега if -->
+   {% if posts%}
+       <table class="table"> <!-- Начинаем описывать таблицу -->
+
+           <tr> <!-- Добавляем строку -->
+               <th> <!-- Добавляем ячейку в строку -->
+
+                   ID поста
+               </th>
+               <th> <!-- Добавляем ячейку в строку -->
+
+                   Категория
+               </th>
+               <th> <!-- Добавляем ячейку в строку -->
+
+                   Заголовок
+               </th>
+               <th> <!-- Добавляем ещё одну ячейку в строку и так далее -->
+
+                   Дата публикации
+               </th>
+               <th>
+                   Первые 20 символов текста
+               </th>
+               </tr> <!-- Не забываем закрыть HTML-тег строки -->
+           {% for post in posts%}
+               <tr>
+                   <td>{{ post.pk }}</td>
+                   <td>{% for category in post.categories.all %}
+                        <a href="/categories/{{ category.pk }}" style="color: black;">{{ category.category_name }}</a>
+                        {% endfor %}
+                   </td>
+                   <td>{{ post.title}}</td>
+                   <td>{{ post.time}}</td>
+                   <td>{{ post.text}}</td>
+               </tr>
+
+           {% endfor %}
+       </table> <!-- ... и таблицы -->
+   {% else %}
+       <!-- Если постов нет, говорим, что постов нет ;) -->
+       <h4>Постов нет!</h4>
+   {% endif %}
+    {# Добавляем пагинацию на страницу #}
+   {% if page_obj.has_other_pages %}
+       {# Информация о предыдущих страницах #}
+       {% if page_obj.has_previous %}
+           <a href="?page=1">1</a>
+           {% if page_obj.previous_page_number != 1 %}
+               ...
+               <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+           {% endif %}
+       {% endif %}
+
+       {# Информация о текущей странице #}
+       {{ page_obj.number }}
+
+       {# Информация о следующих страницах #}
+       {% if page_obj.has_next %}
+           <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+           {% if paginator.num_pages != page_obj.next_page_number %}
+               ...
+               <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+           {% endif %}
+       {% endif %}
+    {% endif %}
+{% endblock content %}
