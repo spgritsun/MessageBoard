@@ -175,8 +175,11 @@ DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
 SERVER_EMAIL = os.getenv('SERVER_EMAIL')
 
 # CKEditor_settings
-
 CKEDITOR_5_USER_LANGUAGE = True
+
+CKEDITOR_5_ALLOW_ALL_FILE_TYPES = True
+CKEDITOR_5_UPLOAD_FILE_TYPES = ['jpeg', 'jpg', 'pdf', 'png']  # optional
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
@@ -209,8 +212,7 @@ customColorPalette = [
 
 CKEDITOR_5_CUSTOM_CSS = 'path_to.css'  # optional
 # CKEDITOR_5_FILE_STORAGE = "path_to_storage.CustomStorage"  # optional
-CKEDITOR_5_ALLOW_ALL_FILE_TYPES = True
-CKEDITOR_5_UPLOAD_FILE_TYPES = ['jpeg', 'pdf', 'png']  # optional
+
 CKEDITOR_5_CONFIGS = {
     'default': {
         'toolbar': ['heading', '|', 'bold', 'italic', 'link',
