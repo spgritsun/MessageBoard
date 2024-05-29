@@ -25,10 +25,10 @@ Detailed view
                    Заголовок поста
                </th>
                <th> <!-- Добавляем ещё одну ячейку в строку и так далее -->
-                   Текст поста
+                   Автор
                </th>
                <th>
-                   Дата
+                   Дата публикации
                </th>
                </tr> <!-- Не забываем закрыть HTML-тег строки -->
                    <tr>
@@ -37,10 +37,13 @@ Detailed view
                         {% endfor %}
                    </td>
                        <td>{{ post.title }}</td>
-                       <td>{{ post.text}}</td>
+                       <td>{{ post.author}}</td>
                        <td>{{ post.time}}</td>
                    </tr>
        </table> <!-- ... и таблицы -->
+
+       {{ post.text|safe}}
+
        <br>
       <div  style="display: flex; justify-content: center; align-items: center;">
     <div style="margin-right: 10px;">

@@ -2,5 +2,16 @@
 
 {% block content %}
     <br>
-    <h5 class = "text-center">{{message}} "{{category.category_name}}"</h5>
+    <h5 class = "text-center">{{message}} <a href="/categories/{{ category.pk }}" style="color: black;">
+        "{{ category.category_name }}"</a></h5>
+
+    {% if not subscriber %}
+        <br>
+        <button><a href="{% url 'subscribe' category.id %}" style="text-decoration: none; color: black;">Подписаться</a></button>
+    {% else %}
+        <br>
+        <button><a href="{% url 'unsubscribe' category.id %}" style="text-decoration: none; color: black;
+">Отписаться</a></button>
+    {% endif %}
+
 {% endblock content %}

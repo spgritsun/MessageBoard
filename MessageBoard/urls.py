@@ -31,9 +31,7 @@ urlpatterns = [
     path('login/', PersonalView.as_view()),
     path('logout/', LogoutView.as_view(template_name='auth/logout.html'), name='logout'),
     path('', include('main.urls')),
-    path('categories/<int:pk>', CategoryPostListView.as_view(), name='category_post_list'),
-]
-
+   ]
 urlpatterns += [
                    path("ckeditor5/", include('django_ckeditor_5.urls')),
                ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
