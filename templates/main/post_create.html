@@ -1,13 +1,17 @@
 {% extends 'base.html' %}
 {% block header %}
-    {{ form.media }} # Required for styling/js to make ckeditor5 work
+    Create post
 {% endblock %}
 {% block content %}
+
+    <h3>Создать пост</h3>
+
+<hr>
     <form method="POST">
         {% csrf_token %}
         {{ form.media }}
         {{ form.as_p }}
-        <input type="submit" value="Submit article">
+        <input type="submit" value="Сохранить пост">
     </form>
 {% endblock %}
 

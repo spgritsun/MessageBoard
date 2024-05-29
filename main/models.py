@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.urls import reverse
 from django_ckeditor_5.fields import CKEditor5Field
 from django.utils import timezone
 
@@ -24,12 +25,15 @@ class Category(models.Model):
 class Post(models.Model):
     author = models.ForeignKey(Author, verbose_name='Автор', on_delete=models.CASCADE)
     time = models.DateTimeField(verbose_name='Время создания поста', default=timezone.now)
-    categories = models.ManyToManyField(Category, through='PostCategory')
+    categories = models.ManyToManyField(Category, through='PostCategory', verbose_name='Категории')
     title = models.CharField(max_length=200, verbose_name='Заголовок поста')
     text = CKEditor5Field(config_name='extends', verbose_name='Текст поста')
 
+    def get_absolute_url(self):
+        return reverse('post_list')  # , args=[str(self.id)]
+
     def __str__(self):
-        return f'{self.title}, {self.time}, {self.text[:30]}'
+        return f' {self.time}, {self.title}, {self.text[:30]}'
 
 
 class Comment(models.Model):

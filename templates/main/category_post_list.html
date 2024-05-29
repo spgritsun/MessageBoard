@@ -1,24 +1,33 @@
+<!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
 {% extends 'base.html' %}
 {#{% load custom_filters %}#}
 <!-- Название у нас будет posts -->
 {% block title %}
-Posts
+    {% if cat_post_context %}
+        {{ category.category_name }}
+    {% endif %}
 {% endblock title %}
 
 <!-- В контенте на странице мы выводим все посты-->
 {% block content %}
-   <h3>Все посты</h3>
+    {% if is_not_subscriber %}
+    <br>
+    <h5>Вы можете подписаться на посты категории "{{ category.category_name }}"</h5>
+        <button><a href="{% url 'subscribe' category.id %}" style="text-decoration: none; color: black;">Подписаться</a></button>
 
-   <hr>
+    {% else %}
+    <h3>Вы подписаны на рассылку постов категории "{{ category.category_name }}"</h3>
+        <button><a href="{% url 'unsubscribe' category.id %}" style="text-decoration: none; color: black;
+">Отписаться</a></button>
+    {% endif %}
+
+    <hr>
    <!-- Выводим посты, только если они есть с помощью тега if -->
-   {% if posts%}
+   {% if cat_post_context%}
        <table class="table"> <!-- Начинаем описывать таблицу -->
 
            <tr> <!-- Добавляем строку -->
-               <th> <!-- Добавляем ячейку в строку -->
 
-                   ID поста
-               </th>
                <th> <!-- Добавляем ячейку в строку -->
 
                    Категория
@@ -35,9 +44,8 @@ Posts
                    Первые 20 символов текста
                </th>
                </tr> <!-- Не забываем закрыть HTML-тег строки -->
-           {% for post in posts%}
+           {% for post in cat_post_context %}
                <tr>
-                   <td><a href="/posts/{{ post.pk }}" style="color: black;">{{ post.pk }}</a></td>
                    <td>{% for category in post.categories.all %}
                         <a href="/categories/{{ category.pk }}" style="color: black;">{{ category.category_name }}</a>
                         {% endfor %}
@@ -46,7 +54,6 @@ Posts
                    <td>{{ post.time}}</td>
                    <td>{{ post.text}}</td>
                </tr>
-
            {% endfor %}
        </table> <!-- ... и таблицы -->
    {% else %}

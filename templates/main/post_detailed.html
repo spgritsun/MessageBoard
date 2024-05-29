@@ -1,0 +1,58 @@
+<!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
+{% extends 'base.html' %}
+{#{% load custom_filters %}#}
+<!-- Название у нас будет News -->
+{% block title %}
+Detailed view
+{% endblock title %}
+
+<!-- В контенте на странице мы выводим пост, идентификатор которого был передан в url -->
+{% block content %}
+   <h3>Пост № {{ post.pk }}</h3>
+   <hr>
+   <!-- Выводим посты, только если они есть и они являются новостью с помощью тега if -->
+   {% if post%}
+       <table class="table"> <!-- Начинаем описывать таблицу -->
+
+           <tr> <!-- Добавляем строку -->
+               <th> <!-- Добавляем ячейку в строку -->
+
+                   Категория
+               </th>
+
+               <th> <!-- Добавляем ячейку в строку -->
+
+                   Заголовок поста
+               </th>
+               <th> <!-- Добавляем ещё одну ячейку в строку и так далее -->
+                   Текст поста
+               </th>
+               <th>
+                   Дата
+               </th>
+               </tr> <!-- Не забываем закрыть HTML-тег строки -->
+                   <tr>
+                       <td>{% for category in post.categories.all %}
+                        <a href="/categories/{{ category.pk }}" style="color: black;">{{ category.category_name }}</a>
+                        {% endfor %}
+                   </td>
+                       <td>{{ post.title }}</td>
+                       <td>{{ post.text}}</td>
+                       <td>{{ post.time}}</td>
+                   </tr>
+       </table> <!-- ... и таблицы -->
+       <br>
+      <div  style="display: flex; justify-content: center; align-items: center;">
+    <div style="margin-right: 10px;">
+        <button><a href="{% url 'post_update' post.pk %}" style="text-decoration: none; color: black;">Редактировать</a></button>
+    </div>
+    <div>
+        <button><a href="{% url 'post_delete' post.pk %}" style="text-decoration: none; color: black;">Удалить</a></button>
+    </div>
+</div>
+
+   {% else %}
+       <!-- Если постов нет или пост есть, но он не новость, говорим, что новостей нет ;) -->
+       <h4>По этому адресу нет постов!</h4>
+   {% endif %}
+{% endblock content %}

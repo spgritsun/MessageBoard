@@ -22,15 +22,16 @@ from django.conf.urls.static import static
 
 from auth.views import PersonalView
 from main import views
+from main.views import CategoryPostListView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
+    path('celery_results/', include('django_celery_results.urls')),
     path('login/', PersonalView.as_view()),
-    path('logout/',
-         LogoutView.as_view(template_name='auth/logout.html'),
-         name='logout'),
+    path('logout/', LogoutView.as_view(template_name='auth/logout.html'), name='logout'),
     path('', include('main.urls')),
+    path('categories/<int:pk>', CategoryPostListView.as_view(), name='category_post_list'),
 ]
 
 urlpatterns += [

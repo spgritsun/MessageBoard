@@ -13,13 +13,12 @@ class PostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ("author", "title", "text")
+        fields = ("categories", "author", "title", "text")
         widgets = {
             "text": CKEditor5Widget(
                 attrs={"class": "django_ckeditor_5"}, config_name="extends"
             )
         }
-
 
 # class PostForm(forms.ModelForm):
 #     """Form for comments to the article."""
