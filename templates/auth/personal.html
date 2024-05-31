@@ -15,7 +15,8 @@
     </div>
     {% if not is_not_author %}
         <hr>
-        <div style="margin-bottom: 30px;"><p> Вы являетесь автором и можете размещать свои <a href="/articles/create/">статьи</a> и <a href="/news/create/">новости!</a></p></div>
+        <div style="margin-bottom: 30px;"><p> Вы являетесь автором и можете размещать свои <a
+            href="/posts/create/">посты</a>
     {% endif %}
  <form method="post" action="{% url 'logout' %}">
     {% csrf_token %}

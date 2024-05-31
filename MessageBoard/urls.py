@@ -20,6 +20,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+import main
 from auth.views import PersonalView
 from main import views
 from main.views import CategoryPostListView
@@ -31,7 +32,8 @@ urlpatterns = [
     path('login/', PersonalView.as_view()),
     path('logout/', LogoutView.as_view(template_name='auth/logout.html'), name='logout'),
     path('', include('main.urls')),
+    path("ckeditor5/image_upload/", main.views.upload_file, name="ck_editor_5_upload_file"),
    ]
 urlpatterns += [
-                   path("ckeditor5/", include('django_ckeditor_5.urls')),
+                   # path("ckeditor5/", include('django_ckeditor_5.urls')),
                ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

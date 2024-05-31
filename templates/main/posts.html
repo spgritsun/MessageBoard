@@ -43,7 +43,7 @@ Posts
                         <a href="/categories/{{ category.pk }}" style="color: black;">{{ category.category_name }}</a>
                         {% endfor %}
                    </td>
-                   <td>{{ post.title}}</td>
+                   <td><a href="/posts/{{ post.pk }}" style="color: black;">{{ post.title}}</a></td>
                    <td>{{ post.author}}</td>
                    <td>{{ post.time}}</td>
 
