@@ -13,7 +13,7 @@
         <p>Ваше имя пользователя:  {{request.user.username}}</p>
         <p>Последний раз вы заходили на сайт {{request.user.last_login}}</p>
     </div>
-    {% if not is_not_author %}
+    {% if in_group_author and in_model_author %}
         <hr>
         <div style="margin-bottom: 30px;"><p> Вы являетесь автором и можете размещать свои <a
             href="/posts/create/">посты</a>
@@ -21,7 +21,7 @@
  <form method="post" action="{% url 'logout' %}">
     {% csrf_token %}
     <button type="submit">Выйти</button>
-    {% if is_not_author %}
+    {% if not in_group_author and not in_model_author %}
     <button> <a href="/upgrade/" style="text-decoration: none; color: black;"> Стать автором!</a> </button>
     {% endif %}
 </form>

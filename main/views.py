@@ -9,6 +9,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django_ckeditor_5.forms import UploadFileForm
 from django_ckeditor_5.views import image_verify, NoImageException, handle_uploaded_file
+
 if get_version() >= "4.0":
     from django.utils.translation import gettext_lazy as _
 else:
@@ -32,8 +33,8 @@ class PostList(ListView):
     paginate_by = 10
 
 
-class PostCreate(CreateView):  # PermissionRequiredMixin,
-    # permission_required = 'main.add_post'
+class PostCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    permission_required = 'main.add_post'
     # Указываем нашу разработанную форму
     form_class = PostForm
     # модель
@@ -58,14 +59,15 @@ class PostDetail(DetailView):
     queryset = Post.objects.all()
 
 
-class PostUpdate(LoginRequiredMixin, UpdateView):
-    # permission_required = 'main.change_post'
+class PostUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    permission_required = 'main.change_post'
     form_class = PostForm
     model = Post
     template_name = 'main/post_edit.html'
 
 
-class PostDelete(LoginRequiredMixin, DeleteView):
+class PostDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+    permission_required = 'main.delete_post'
     model = Post
     template_name = 'main/post_delete.html'
     success_url = reverse_lazy('post_list')
@@ -123,6 +125,7 @@ def unsubscribe(request, pk):
                       {'category': category, 'message': message, 'subscriber': subscriber})
 
 
+@login_required
 def upload_file(request):
     if request.method == "POST" and request.user.is_active:
         form = UploadFileForm(request.POST, request.FILES)
