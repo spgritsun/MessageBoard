@@ -6,17 +6,10 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 
 from main.forms import PostForm
-from main.models import Post, Comment, Category
+from main.models import Post, Comment, Category, Author
 
 
 # Create your views here.
-def index(request):
-    html = '<h2>Я крут!!!</h2><figure class="image image_resized image-style-align-left" style="width:23.68%;"><img ' \
-           'style="aspect-ratio:1280/853;" src="/media/%D0%9F%D0%B0%D0%B2%D0%B5%D0%BB_5aI5SdA.jpg" width="1280" ' \
-           'height="853"></figure><p>&nbsp;</p><p>Кто-то там адыоадвдаодвадлводла</p> '
-    return HttpResponse(html)
-
-
 class PostList(ListView):
     # Указываем модель, объекты которой мы будем выводить
     model = Post
@@ -39,6 +32,11 @@ class PostCreate(CreateView):  # PermissionRequiredMixin,
     model = Post
     # и новый шаблон, в котором используется форма.
     template_name = 'main/post_create.html'
+
+    def form_valid(self, form):
+        form.instance.author = Author.objects.get(id=self.request.user.pk)  # Устанавливаем текущего пользователя как
+        # автора поста
+        return super().form_valid(form)
 
 
 class PostDetail(DetailView):
