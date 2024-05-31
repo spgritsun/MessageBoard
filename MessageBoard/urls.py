@@ -33,7 +33,4 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(template_name='auth/logout.html'), name='logout'),
     path('', include('main.urls')),
     path("ckeditor5/image_upload/", main.views.upload_file, name="ck_editor_5_upload_file"),
-   ]
-urlpatterns += [
-                   # path("ckeditor5/", include('django_ckeditor_5.urls')),
-               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+   ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
