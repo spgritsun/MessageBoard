@@ -39,12 +39,17 @@ Posts
            {% for post in posts%}
                <tr>
                    <td><a href="/posts/{{ post.pk }}" style="color: black;">{{ post.pk }}</a></td>
-                   <td>{% for category in post.categories.all %}
+                   <td>
+                       {% for category in post.categories.all %}
                         <a href="/categories/{{ category.pk }}" style="color: black;">{{ category.category_name }}</a>
-                        {% endfor %}
+                       {% endfor %}
                    </td>
                    <td><a href="/posts/{{ post.pk }}" style="color: black;">{{ post.title}}</a></td>
-                   <td>{{ post.author}}</td>
+               {% if current_user_posts %}
+                   <td><a href="/author/{{ post.author_id}}" style="color: black;">{{ post.author}}</a></td>
+               {% else %}
+                   <td><a href="/author/{{ post.author_id}}" style="color: black;">{{ post.author}}</a></td>
+               {% endif %}
                    <td>{{ post.time}}</td>
 
                </tr>

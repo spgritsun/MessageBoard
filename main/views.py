@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMix
 from django.contrib.auth.models import Group
 from django.http import HttpResponse, JsonResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django_ckeditor_5.forms import UploadFileForm
 from django_ckeditor_5.views import image_verify, NoImageException, handle_uploaded_file
@@ -31,6 +31,15 @@ class PostList(ListView):
     # Его надо указать, чтобы обратиться к списку объектов в html-шаблоне.
     context_object_name = 'posts'
     paginate_by = 10
+
+
+class CurrentUserPostList(PostList):
+    def get_queryset(self):
+        if self.request.path == reverse(
+                'current_user_post_list'):  # Здесь 'current_user_post_list' - это имя URL маршрута
+            queryset = Post.objects.filter(author=Author.objects.get(user_id=self.request.user.pk)).order_by(
+                '-time')
+            return queryset
 
 
 class PostCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
@@ -89,6 +98,24 @@ class CategoryPostListView(ListView):
         context['is_not_subscriber'] = self.request.user not in self.category.subscribers.all()
         context['category'] = self.category
         return context
+
+
+class AuthorPostListView(ListView):
+    model = Post
+    template_name = 'main/author_post_list.html'
+    context_object_name = 'author_post_context'
+    paginate_by = 10
+
+    def get_queryset(self):
+        self.author = get_object_or_404(Author, id=self.kwargs['pk'])
+        queryset = Post.objects.filter(author=self.author).order_by('-time')
+        return queryset
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['is_not_subscriber'] = self.request.user not in self.category.subscribers.all()
+    #     context['category'] = self.category
+    #     return context
 
 
 @login_required

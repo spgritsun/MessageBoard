@@ -1,7 +1,7 @@
 <!--  наследуемся от шаблона base.html -->
 {% extends 'base.html' %}
 {#{% load custom_filters %}#}
-<!-- Название у нас будет posts -->
+<!-- Название у нас будет user -->
 {% block title %}
     {% if cat_post_context %}
         {{ category.category_name }}
@@ -10,25 +10,25 @@
 
 <!-- В контенте на странице мы выводим все посты-->
 {% block content %}
-    {% if is_not_subscriber %}
-    <br>
-    <h5>Вы можете подписаться на рассылку постов категории <a href="/categories/{{ category.pk }}" style="color: black;">
-        "{{ category.category_name }}"</a></h5>
-        <br>
-        <button><a href="{% url 'subscribe' category.id %}" style="text-decoration: none; color: black;">Подписаться</a></button>
-
-    {% else %}
-    <br>
-    <h5>Вы подписаны на рассылку постов категории <a href="/categories/{{ category.pk }}" style="color: black;">
-        "{{ category.category_name }}"</a></h5>
-        <br>
-        <button><a href="{% url 'unsubscribe' category.id %}" style="text-decoration: none; color: black;
-">Отписаться</a></button>
-    {% endif %}
+{#    {% if is_not_subscriber %}#}
+{#    <br>#}
+{#    <h5>Вы можете подписаться на рассылку постов категории <a href="/categories/{{ category.pk }}" style="color: black;">#}
+{#        "{{ category.category_name }}"</a></h5>#}
+{#        <br>#}
+{#        <button><a href="{% url 'subscribe' category.id %}" style="text-decoration: none; color: black;">Подписаться</a></button>#}
+{##}
+{#    {% else %}#}
+{#    <br>#}
+{#    <h5>Вы подписаны на рассылку постов категории <a href="/categories/{{ category.pk }}" style="color: black;">#}
+{#        "{{ category.category_name }}"</a></h5>#}
+{#        <br>#}
+{#        <button><a href="{% url 'unsubscribe' category.id %}" style="text-decoration: none; color: black;#}
+{#">Отписаться</a></button>#}
+{#    {% endif %}#}
 
     <hr>
    <!-- Выводим посты, только если они есть с помощью тега if -->
-   {% if cat_post_context%}
+   {% if author_post_context %}
        <table class="table"> <!-- Начинаем описывать таблицу -->
 
            <tr> <!-- Добавляем строку -->
@@ -49,14 +49,14 @@
                    Дата публикации
                </th>
                </tr> <!-- Не забываем закрыть HTML-тег строки -->
-           {% for post in cat_post_context %}
+           {% for post in author_post_context %}
                <tr>
                    <td>{% for category in post.categories.all %}
                         <a href="/categories/{{ category.pk }}" style="color: black;">{{ category.category_name }}</a>
            {% endfor %}
                    </td>
                    <td><a href="/posts/{{ post.pk }}" style="color: black;">{{ post.title}}</a></td>
-                   <td><a href="/author/{{ post.author_id}}" style="color: black;">{{ post.author}}</a></td>
+                   <td>{{ post.author}}</td>
                    <td>{{ post.time}}</td>
 
                </tr>
