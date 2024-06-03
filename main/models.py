@@ -43,6 +43,9 @@ class Comment(models.Model):
     comment_time = models.DateTimeField(default=timezone.now, verbose_name='Время создания комментария')
     is_accepted = models.BooleanField(default=False, verbose_name='Комментарий принят')
 
+    def get_absolute_url(self):
+        return reverse('post_list')
+
     def __str__(self):
         return self.comment_text
 

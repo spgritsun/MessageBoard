@@ -3,8 +3,8 @@
 {#{% load custom_filters %}#}
 <!-- Название у нас будет user -->
 {% block title %}
-    {% if cat_post_context %}
-        {{ category.category_name }}
+    {% if author_post_context %}
+        {{ post.author}}
     {% endif %}
 {% endblock title %}
 
@@ -32,7 +32,10 @@
        <table class="table"> <!-- Начинаем описывать таблицу -->
 
            <tr> <!-- Добавляем строку -->
+                <th> <!-- Добавляем ячейку в строку -->
 
+                   ID поста
+               </th>
                <th> <!-- Добавляем ячейку в строку -->
 
                    Категория
@@ -51,6 +54,7 @@
                </tr> <!-- Не забываем закрыть HTML-тег строки -->
            {% for post in author_post_context %}
                <tr>
+                   <td><a href="/posts/{{ post.pk }}" style="color: black;">{{ post.pk}}</a></td>
                    <td>{% for category in post.categories.all %}
                         <a href="/categories/{{ category.pk }}" style="color: black;">{{ category.category_name }}</a>
            {% endfor %}

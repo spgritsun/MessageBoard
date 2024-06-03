@@ -14,7 +14,7 @@ if get_version() >= "4.0":
     from django.utils.translation import gettext_lazy as _
 else:
     from django.utils.translation import ugettext_lazy as _
-from main.forms import PostForm
+from main.forms import PostForm, CommentForm
 from main.models import Post, Comment, Category, Author
 
 
@@ -33,13 +33,28 @@ class PostList(ListView):
     paginate_by = 10
 
 
-class CurrentUserPostList(PostList):
+class CurrentUserPostList(LoginRequiredMixin, PostList):
     def get_queryset(self):
         if self.request.path == reverse(
                 'current_user_post_list'):  # Здесь 'current_user_post_list' - это имя URL маршрута
-            queryset = Post.objects.filter(author=Author.objects.get(user_id=self.request.user.pk)).order_by(
-                '-time')
-            return queryset
+            if Author.objects.filter(user_id=self.request.user.pk).exists():
+                queryset = Post.objects.filter(author=Author.objects.get(user_id=self.request.user.pk)).order_by(
+                    '-time')
+                return queryset
+            else:
+                queryset = Post.objects.none()
+                return queryset
+
+
+class CurrentUserCommentList(LoginRequiredMixin, PostList):
+    model = Comment
+    ordering = '-comment_time'
+    template_name = 'main/comments.html'
+    context_object_name = 'comments'
+
+    def get_queryset(self):
+        queryset = Comment.objects.filter(user_id=self.request.user.pk).order_by('-comment_time')
+        return queryset
 
 
 class PostCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
@@ -55,6 +70,20 @@ class PostCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
         form.instance.author = Author.objects.get(user_id=self.request.user.pk)  # Устанавливаем текущего пользователя
         # как
         # автора поста
+        return super().form_valid(form)
+
+
+class CommentCreate(LoginRequiredMixin, CreateView):
+    # Указываем нашу разработанную форму
+    form_class = CommentForm
+    # модель
+    model = Comment
+    # и новый шаблон, в котором используется форма.
+    template_name = 'main/comment_create.html'
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user  # Устанавливаем текущего пользователя
+        form.instance.post = Post.objects.get(id=self.kwargs['pk'])
         return super().form_valid(form)
 
 

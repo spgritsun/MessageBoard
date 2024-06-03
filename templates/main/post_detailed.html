@@ -55,7 +55,7 @@ Detailed view
             </div>
        {% else %}
             <div>
-                <button><a href="#" style="text-decoration: none; color: black;">Комментировать</a></button>
+                <button><a href="{% url 'comment_create' post.pk %}" style="text-decoration: none; color: black;">Комментировать</a></button>
             </div>
 
        {% endif %}
