@@ -46,18 +46,21 @@ class CurrentUserPostList(LoginRequiredMixin, PostList):
                 return queryset
 
 
-class CurrentUserCommentList(LoginRequiredMixin, PostList):
+class CommentList(LoginRequiredMixin, PostList):
     model = Comment
     ordering = '-comment_time'
-    template_name = 'main/comments.html'
+    template_name = 'main/cur_user_post_comments.html'
     context_object_name = 'comments'
 
     def get_queryset(self):
-        queryset = Comment.objects.filter(user_id=self.request.user.pk).order_by('-comment_time')
+        queryset = Comment.objects.all().filter(post__author__user_id=self.request.user.pk).order_by(
+            '-comment_time')
         return queryset
 
 
-class CurrentUserPostsCommentList(LoginRequiredMixin, CurrentUserCommentList):
+class CurrentUserCommentList(CommentList):
+    template_name = 'main/comment_list.html'
+
     def get_queryset(self):
         queryset = Comment.objects.filter(user_id=self.request.user.pk).order_by('-comment_time')
         return queryset

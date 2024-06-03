@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{#{% load custom_filters %}#}
+<!-- Название у нас будет posts -->
+{% block title %}
+Comments
+{% endblock title %}
+
+<!-- В контенте на странице мы выводим все посты-->
+{% block content %}
+    <br>
+   <h3>Комментарии на мои посты</h3>
+
+   <hr>
+   <!-- Выводим посты, только если они есть с помощью тега if -->
+   {% if comments%}
+       <table class="table"> <!-- Начинаем описывать таблицу -->
+
+           <tr> <!-- Добавляем строку -->
+               <th> <!-- Добавляем ячейку в строку -->
+
+                   ID поста
+               </th>
+               <th> <!-- Добавляем ячейку в строку -->
+
+                   Заголовок поста
+               </th>
+               <th> <!-- Добавляем ячейку в строку -->
+
+                   Автор поста
+               </th>
+               <th> <!-- Добавляем ячейку в строку -->
+
+                   Текст комментария
+               </th>
+               <th> <!-- Добавляем ещё одну ячейку в строку и так далее -->
+
+                   Дата комментария
+               </th>
+               <th>
+                   Комментарий принят
+               </th>
+               </tr> <!-- Не забываем закрыть HTML-тег строки -->
+           {% for comment in comments%}
+
+               <tr>
+                   <td><a href="/posts/{{ comment.post.pk }}" style="color: black;">{{ comment.post.pk }}</a></td>
+                   <td>
+                        <a href="/posts/{{ comment.post.pk }}" style="color: black;">{{ comment.post.title}}</a>
+                   </td>
+                   <td>{{ comment.post.author}}</td>
+                   <td>{{ comment.comment_text|truncatechars:250}}</td>
+                   <td>{{ comment.comment_time}}</td>
+                   <td>{% if comment.is_accepted%}
+                          Принят
+                       {% else %}
+                          -
+                       {% endif %}
+                  </td>
+               </tr>
+
+           {% endfor %}
+       </table> <!-- ... и таблицы -->
+   {% else %}
+       <!-- Если постов нет, говорим, что постов нет ;) -->
+       <h5>Комментариев пока нет!</h5>
+   {% endif %}
+    {# Добавляем пагинацию на страницу #}
+   {% if page_obj.has_other_pages %}
+       {# Информация о предыдущих страницах #}
+       {% if page_obj.has_previous %}
+           <a href="?page=1">1</a>
+           {% if page_obj.previous_page_number != 1 %}
+               ...
+               <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+           {% endif %}
+       {% endif %}
+
+       {# Информация о текущей странице #}
+       {{ page_obj.number }}
+
+       {# Информация о следующих страницах #}
+       {% if page_obj.has_next %}
+           <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+           {% if paginator.num_pages != page_obj.next_page_number %}
+               ...
+               <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+           {% endif %}
+       {% endif %}
+    {% endif %}
+{% endblock content %}
