@@ -34,29 +34,27 @@ Comments
                </th>
                <th> <!-- Добавляем ещё одну ячейку в строку и так далее -->
 
-                   Автор комментария
+                   Дата комментария
                </th>
                <th>
-                   Дата комментария
+                   Комментарий принят
                </th>
                </tr> <!-- Не забываем закрыть HTML-тег строки -->
            {% for comment in comments%}
                <tr>
                    <td><a href="/posts/{{ comment.post.pk }}" style="color: black;">{{ comment.post.pk }}</a></td>
                    <td>
-{#                       {% for category in post.categories.all %}#}
                         <a href="/posts/{{ comment.post.pk }}" style="color: black;">{{ comment.post.title}}</a>
-{#                       {% endfor %}#}
                    </td>
                    <td>{{ comment.post.author}}</td>
                    <td>{{ comment.comment_text|truncatechars:250}}</td>
-{#               {% if current_user_posts %}#}
-                   <td>{{ comment.user}}</td>
-{#               {% else %}#}
-{#                   <td><a href="/author/{{ post.author_id}}" style="color: black;">{{ post.author}}</a></td>#}
-{#               {% endif %}#}
                    <td>{{ comment.comment_time}}</td>
-
+                   <td>{% if comment.is_accepted%}
+                          Принят
+                       {% else %}
+                          -
+                       {% endif %}
+                  </td>
                </tr>
 
            {% endfor %}

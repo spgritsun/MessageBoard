@@ -57,6 +57,12 @@ class CurrentUserCommentList(LoginRequiredMixin, PostList):
         return queryset
 
 
+class CurrentUserPostsCommentList(LoginRequiredMixin, CurrentUserCommentList):
+    def get_queryset(self):
+        queryset = Comment.objects.filter(user_id=self.request.user.pk).order_by('-comment_time')
+        return queryset
+
+
 class PostCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     permission_required = 'main.add_post'
     # Указываем нашу разработанную форму

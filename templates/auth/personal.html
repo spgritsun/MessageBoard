@@ -2,27 +2,38 @@
 
 {% block content %}
     {% if request.user.first_name or request.user.last_name %}
-     <h2>{{request.user.first_name}} {{request.user.last_name}}, вы авторизованы!</h2>
+        <h2>{{request.user.first_name}} {{request.user.last_name}}, вы авторизованы!</h2>
     {% else  %}
-     <h2>{{request.user.username}}, вы авторизованы!</h2>
+        <h2>{{request.user.username}}, вы авторизованы!</h2>
     {% endif %}
     <br>
     <div style="margin-bottom: 20px;"> <h5>Ваша персональная информация:</h5></div>
     <div style="margin-bottom: 20px;  line-height:1;">
-
         <p>Ваше имя пользователя:  {{request.user.username}}</p>
         <p>Последний раз вы заходили на сайт {{request.user.last_login}}</p>
     </div>
     {% if in_group_author and in_model_author %}
         <hr>
-        <div style="margin-bottom: 30px;"><p> Вы являетесь автором и можете размещать свои <a
+        <div style="margin-bottom: 40px;"><p> Вы являетесь автором и можете размещать свои <a
             href="/posts/create/">посты</a>
     {% endif %}
- <form method="post" action="{% url 'logout' %}">
-    {% csrf_token %}
-    <button type="submit">Выйти</button>
+     <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit">Выйти</button>
+     </form>
+        </div>
     {% if not in_group_author and not in_model_author %}
-    <button> <a href="/upgrade/" style="text-decoration: none; color: black;"> Стать автором!</a> </button>
+
+         <div class="text-center" style="width: 50%; margin:5px auto;">
+            <hr>
+             <p>Для того, чтобы иметь возможность размещать посты, вы можете стать автором.</p>
+             <p>Ознакомьтесь, пожалуйста с правилами, которые необходимо соблюдать при публикации постов на сайте:
+                 <a href="#">Правила размещения постов</a></p>
+             <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button> <a href="/upgrade/" style="text-decoration: none; color: black;"> Стать автором!</a> </button>
+             </form>
+        </div>
     {% endif %}
-</form>
+
 {% endblock %}
