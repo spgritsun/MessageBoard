@@ -15,6 +15,8 @@
         <!-- Core theme CSS (includes Bootstrap)-->
         {% load static %}
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+        <link href="{% static 'css/home.css' %}" rel="stylesheet" />
+
 
     </head>
     <body>
@@ -41,19 +43,16 @@
 {#                           </a>#}
 {#                       </li>#}
                        <li class="nav-item">
-                           <a class="nav-link" href="/news/">Все новости</a>
-                       </li>
-                       <li class="nav-item">
                            <a class="nav-link" href="/current-user-post-comments/">Комментарии на мои посты</a>
                        </li>
                        <li class="nav-item">
                            <a class="nav-link" href="/current-user-comments/">Мои комментарии</a>
                        </li>
                        <li class="nav-item">
-                           <a class="nav-link" href="/current-user-posts/">Мои посты</a>
+                           <a class="nav-link" href="/posts/create/">Создать пост</a>
                        </li>
                        <li class="nav-item">
-                           <a class="nav-link" href="/posts/create/">Создать пост</a>
+                           <a class="nav-link" href="/current-user-posts/">Мои посты</a>
                        </li>
                        <li class="nav-item">
                            <a class="nav-link" href="/posts/">Все посты</a>

@@ -45,6 +45,11 @@ class CurrentUserPostList(LoginRequiredMixin, PostList):
                 queryset = Post.objects.none()
                 return queryset
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_user_posts'] = True
+        return context
+
 
 class CommentList(LoginRequiredMixin, PostList):
     model = Comment
