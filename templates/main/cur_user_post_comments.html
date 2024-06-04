@@ -8,8 +8,11 @@ Comments
 <!-- В контенте на странице мы выводим все посты-->
 {% block content %}
     <br>
-   <h3>Комментарии на мои посты</h3>
-
+    {% if by_user %}
+       <h5>Комментарии на мои посты от пользователя {{by_user}}</h5>
+    {% else %}
+       <h3>Комментарии на мои посты </h3>
+    {% endif %}
    <hr>
    <!-- Выводим посты, только если они есть с помощью тега if -->
    {% if comments%}
@@ -30,14 +33,21 @@ Comments
                </th>
                <th> <!-- Добавляем ячейку в строку -->
 
+                   ID комментария
+               </th>
+               <th> <!-- Добавляем ячейку в строку -->
+
                    Текст комментария
                </th>
                <th> <!-- Добавляем ещё одну ячейку в строку и так далее -->
 
+                   Автор комментария
+               </th>
+               <th>
                    Дата комментария
                </th>
                <th>
-                   Комментарий принят
+                   Статус
                </th>
                </tr> <!-- Не забываем закрыть HTML-тег строки -->
            {% for comment in comments%}
@@ -48,7 +58,10 @@ Comments
                         <a href="/posts/{{ comment.post.pk }}" style="color: black;">{{ comment.post.title}}</a>
                    </td>
                    <td>{{ comment.post.author}}</td>
-                   <td>{{ comment.comment_text|truncatechars:250}}</td>
+                   <td><a href="/comments/{{comment.pk}}" style="color: black;">{{comment.pk}}</a></td>
+                   <td><a href="/comments/{{comment.pk}}" style="color: black;">
+                       {{ comment.comment_text|truncatechars:200}}</a></td>
+                   <td><a href="/commentators/{{comment.user_id}}" style="color: black;">{{comment.user}}</a></td>
                    <td>{{ comment.comment_time}}</td>
                    <td>{% if comment.is_accepted%}
                           Принят
@@ -57,9 +70,15 @@ Comments
                        {% endif %}
                   </td>
                </tr>
-
            {% endfor %}
        </table> <!-- ... и таблицы -->
+       {% if by_user %}
+       <br>
+            <div>
+                <p>Вернуться к <a href="{% url 'current_user_post_comment_list' %}" style="color: black;">полному списку
+                     комментариев</a></p>
+            </div>
+        {% endif %}
    {% else %}
        <!-- Если постов нет, говорим, что постов нет ;) -->
        <h5>Комментариев пока нет!</h5>

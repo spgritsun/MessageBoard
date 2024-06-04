@@ -2,7 +2,7 @@ from django import get_version
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, User
 from django.http import HttpResponse, JsonResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
@@ -53,9 +53,22 @@ class CommentList(LoginRequiredMixin, PostList):
     context_object_name = 'comments'
 
     def get_queryset(self):
-        queryset = Comment.objects.all().filter(post__author__user_id=self.request.user.pk).order_by(
+        queryset = Comment.objects.filter(post__author__user_id=self.request.user.pk).order_by(
             '-comment_time')
         return queryset
+
+
+class CommentListByUser(CommentList):
+    def get_queryset(self):
+        self.comment = get_object_or_404(User, id=self.kwargs['pk'])
+        queryset = Comment.objects.filter(user=self.comment).order_by(
+            '-comment_time')
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['by_user'] = get_object_or_404(User, id=self.kwargs['pk']).username
+        return context
 
 
 class CurrentUserCommentList(CommentList):
@@ -106,6 +119,13 @@ class PostDetail(DetailView):
     queryset = Post.objects.all()
 
 
+class CommentDetail(DetailView):
+    model = Comment
+    template_name = 'main/comment_detailed.html'
+    context_object_name = 'comment'
+    queryset = Comment.objects.all()
+
+
 class PostUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     permission_required = 'main.change_post'
     form_class = PostForm
@@ -118,6 +138,13 @@ class PostDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Post
     template_name = 'main/post_delete.html'
     success_url = reverse_lazy('post_list')
+
+
+class CommentDelete(PostDelete):
+    permission_required = 'main.delete_comment'
+    model = Comment
+    template_name = 'main/comment_delete.html'
+    success_url = reverse_lazy('current_user_post_comment_list')
 
 
 class CategoryPostListView(ListView):
@@ -148,12 +175,6 @@ class AuthorPostListView(ListView):
         self.author = get_object_or_404(Author, id=self.kwargs['pk'])
         queryset = Post.objects.filter(author=self.author).order_by('-time')
         return queryset
-
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['is_not_subscriber'] = self.request.user not in self.category.subscribers.all()
-    #     context['category'] = self.category
-    #     return context
 
 
 @login_required
@@ -188,6 +209,17 @@ def unsubscribe(request, pk):
         message = 'Вы успешно отписались от рассылки постов категории'
         return render(request, 'main/subscribe.html',
                       {'category': category, 'message': message, 'subscriber': subscriber})
+
+
+@login_required
+def comment_accept(request, pk):
+    if Comment.objects.filter(pk=pk).exists():
+        pk = pk
+        comment = Comment.objects.get(pk=pk)
+        comment.is_accepted = True
+        comment.save()
+        message = f'Вы успешно приняли комментарий № {comment.pk} от пользователя {comment.user}'
+        return render(request, 'main/comment_accept.html', {'message': message})
 
 
 @login_required

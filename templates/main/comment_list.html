@@ -30,6 +30,10 @@ Comments
                </th>
                <th> <!-- Добавляем ячейку в строку -->
 
+                   ID комментария
+               </th>
+               <th> <!-- Добавляем ячейку в строку -->
+
                    Текст комментария
                </th>
                <th> <!-- Добавляем ещё одну ячейку в строку и так далее -->
@@ -37,7 +41,7 @@ Comments
                    Дата комментария
                </th>
                <th>
-                   Комментарий принят
+                   Статус комментария
                </th>
                </tr> <!-- Не забываем закрыть HTML-тег строки -->
            {% for comment in comments%}
@@ -47,6 +51,7 @@ Comments
                         <a href="/posts/{{ comment.post.pk }}" style="color: black;">{{ comment.post.title}}</a>
                    </td>
                    <td>{{ comment.post.author}}</td>
+                   <td>{{ comment.pk}}</td>
                    <td>{{ comment.comment_text|truncatechars:250}}</td>
                    <td>{{ comment.comment_time}}</td>
                    <td>{% if comment.is_accepted%}

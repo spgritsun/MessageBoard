@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <br>
+    <h5 class = "text-center">{{message}} </h5>
+    <br>
+    <div>
+        <p>Вернуться к <a href="{% url 'current_user_post_comment_list' %}" style="color: black;">списку комментариев</a>
+            на свои посты</p>
+    </div>
+
+{% endblock content %}

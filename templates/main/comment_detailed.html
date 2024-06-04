@@ -3,21 +3,22 @@
 {#{% load custom_filters %}#}
 <!-- Название у нас будет News -->
 {% block title %}
-Post detailed view
+Comment detailed view
 {% endblock title %}
 
 <!-- В контенте на странице мы выводим пост, идентификатор которого был передан в url -->
 {% block content %}
-   <h3>Пост № {{ post.pk }}</h3>
+   <br>
+   <h3>Комментарий № {{ comment.pk }}</h3>
    <hr>
    <!-- Выводим посты, только если они есть и они являются новостью с помощью тега if -->
-   {% if post%}
+   {% if comment%}
        <table class="table"> <!-- Начинаем описывать таблицу -->
 
            <tr> <!-- Добавляем строку -->
                <th> <!-- Добавляем ячейку в строку -->
 
-                   Категория
+                   ID поста
                </th>
 
                <th> <!-- Добавляем ячейку в строку -->
@@ -25,43 +26,52 @@ Post detailed view
                    Заголовок поста
                </th>
                <th> <!-- Добавляем ещё одну ячейку в строку и так далее -->
-                   Автор
+                   Автор поста
                </th>
                <th>
-                   Дата публикации
+                   Текст комментария
+               </th>
+               <th>
+                   Автор комментария
+               </th>
+               <th>
+                   Дата комментария
                </th>
                </tr> <!-- Не забываем закрыть HTML-тег строки -->
                    <tr>
-                       <td>{% for category in post.categories.all %}
-                        <a href="/categories/{{ category.pk }}" style="color: black;">{{ category.category_name }}</a>
-                        {% endfor %}
-                   </td>
-                       <td>{{ post.title }}</td>
-                       <td>{{ post.author}}</td>
-                       <td>{{ post.time}}</td>
+                       <td>{{comment.post_id}}</td>
+                       <td>{{comment.post.title }}</td>
+                       <td>{{comment.post.author}}</td>
+                       <td>{{comment.comment_text}}</td>
+                       <td>{{comment.user}}</td>
+                       <td>{{comment.comment_time}}</td>
                    </tr>
        </table> <!-- ... и таблицы -->
 
-       {{ post.text|safe}}
-
           <br>
           <div  style="display: flex; justify-content: center; align-items: center;">
-       {% if request.user.username == post.author.user.username %}
+         {% if not comment.is_accepted %}
+{#            <div style="margin-right: 10px;">#}
+{#                <button><a href="{% url 'post_update' post.pk %}" style="text-decoration: none; color: black;">Редактировать</a></button>#}
+{#            </div>#}
             <div style="margin-right: 10px;">
-                <button><a href="{% url 'post_update' post.pk %}" style="text-decoration: none; color: black;">Редактировать</a></button>
+                <button><a href="{% url 'comment_delete' comment.pk %}" style="text-decoration: none; color: black;
+">Удалить комментарий</a></button>
             </div>
             <div>
-                <button><a href="{% url 'post_delete' post.pk %}" style="text-decoration: none; color: black;">Удалить</a></button>
+                <button><a href="{% url 'comment_accept' comment.pk %}" style="text-decoration: none; color: black;
+">Принять комментарий</a></button>
             </div>
-       {% else %}
+        {% else %}
             <div>
-                <button><a href="{% url 'comment_create' post.pk %}" style="text-decoration: none; color: black;">Комментировать</a></button>
+             <h5> Комментарий принят!</h5>
+             <p>Вернуться к <a href="{% url 'current_user_post_comment_list' %}" style="color: black;">списку
+                 комментариев</a> на свои посты</p>
             </div>
-
-       {% endif %}
+        {% endif %}
           </div>
    {% else %}
        <!-- Если постов нет или пост есть, но он не новость, говорим, что новостей нет ;) -->
-       <h4>Пока нет постов!</h4>
+       <h4>Ошибка контекста!</h4>
    {% endif %}
 {% endblock content %}

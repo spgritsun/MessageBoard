@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h3>Удаление комментария</h3>
+<hr>
+<form action="" method="post">
+    {% csrf_token %}
+
+    <p>Удаляем комментарий № {{ comment.pk }} пользователя "{{ comment.user}}"?</p>
+    <input type="submit" value="Удалить комментарий" />
+</form>
+{% endblock content %}

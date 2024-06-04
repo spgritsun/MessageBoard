@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block header %}
-    {{ form.media }}
+    Comment create
 {% endblock %}
 {% block content %}
 
@@ -10,7 +10,6 @@
 <hr>
     <form method="POST">
         {% csrf_token %}
-        {{ form.media }}
         {{ form.as_p }}
         <input type="submit" value="Сохранить комментарий">
     </form>

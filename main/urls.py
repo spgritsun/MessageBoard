@@ -1,9 +1,5 @@
 from django.urls import path
-
-from main import views
-from main.views import PostList, PostCreate, PostDetail, PostUpdate, PostDelete, subscribe, unsubscribe, \
-    CategoryPostListView, upgrade_me, AuthorPostListView, CurrentUserPostList, CommentCreate, CurrentUserCommentList, \
-    CommentList
+from main.views import*
 
 urlpatterns = [
     path('', PostList.as_view(), name='index'),
@@ -14,13 +10,17 @@ urlpatterns = [
     path('posts/create/', PostCreate.as_view(), name='post_create'),
     path('comments/create/<int:pk>/', CommentCreate.as_view(), name='comment_create'),
     path('posts/<int:pk>/', PostDetail.as_view(), name='post_detail'),
+    path('comments/<int:pk>/', CommentDetail.as_view(), name='comment_detail'),
     path('posts/<int:pk>/edit/', PostUpdate.as_view(), name='post_update'),
     path('posts/<int:pk>/delete/', PostDelete.as_view(), name='post_delete'),
+    path('comments/<int:pk>/delete/', CommentDelete.as_view(), name='comment_delete'),
+    path('comments/<int:pk>/accept/', comment_accept, name='comment_accept'),
     path('categories/<int:pk>', CategoryPostListView.as_view(), name='category_post_list'),
     path('author/<int:pk>', AuthorPostListView.as_view(), name='author_post_list'),
     path('upgrade/', upgrade_me, name='upgrade'),
     path('categories/<int:pk>/subscribe', subscribe, name='subscribe'),
     path('categories/<int:pk>/unsubscribe', unsubscribe, name='unsubscribe'),
+    path('commentators/<int:pk>', CommentListByUser.as_view(), name='commentators'),
 
 
 ]

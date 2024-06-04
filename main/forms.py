@@ -2,6 +2,7 @@ from django import forms
 from django.http import request
 
 from django_ckeditor_5.widgets import CKEditor5Widget
+
 from .models import Post, Comment
 
 
@@ -39,7 +40,6 @@ class CommentForm(forms.ModelForm):
         model = Comment
         fields = ("comment_text", "post", "user")
         widgets = {
-            "comment_text": CKEditor5Widget(
-                attrs={"class": "django_ckeditor_5"}, config_name="extends"
-            )
+            "comment_text": forms.Textarea(attrs={'cols': 110, 'rows': 10}),
         }
+
