@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {% if comment_created %}
+        <h3>Уважаемый пользователь {{user}}!</h3>
+        <p>Вы создали комментарий № {{comment_id}} к посту № {{com_post_id }} автора {{com_post_author}}.</p>
+        <p><b>Текст комментария:</b> "{{comment_text}}"</p>
+        <p> Если ваш комментарий будет принят автором поста, вы получите дополнительное уведомление.</p>
+    {% else %}
+        <h3>Уважаемый пользователь {{user}}!</h3>
+        <p>Ваш комментарий № {{comment_id}} к посту № {{com_post_id }} автора {{com_post_author}} был принят автором.</p>
+        <p><b>Текст принятого комментария:</b> "{{comment_text}}"</p>
+    {% endif %}
+
+</body>
+</html>
