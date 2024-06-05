@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Статьи за неделю</title>
+</head>
+<body>
+Внимание! Новые статьи за последнюю неделю!
+<ul>
+    {% for post in posts%}
+        <li><a href="{{ link }}/posts/{{ post.pk }}">{{ post.title }}</a></li>
+    {% endfor %}
+</ul>
+
+</body>
+</html>
