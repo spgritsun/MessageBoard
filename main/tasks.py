@@ -1,11 +1,8 @@
 import datetime
-
 from celery import shared_task
-
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils import timezone
-
 from MessageBoard.celery import app
 from MessageBoard.settings import SITE_URL, DEFAULT_FROM_EMAIL
 from main.models import Post, Category

@@ -10,23 +10,7 @@
 
 <!-- В контенте на странице мы выводим все посты-->
 {% block content %}
-{#    {% if is_not_subscriber %}#}
-{#    <br>#}
-{#    <h5>Вы можете подписаться на рассылку постов категории <a href="/categories/{{ category.pk }}" style="color: black;">#}
-{#        "{{ category.category_name }}"</a></h5>#}
-{#        <br>#}
-{#        <button><a href="{% url 'subscribe' category.id %}" style="text-decoration: none; color: black;">Подписаться</a></button>#}
-{##}
-{#    {% else %}#}
-{#    <br>#}
-{#    <h5>Вы подписаны на рассылку постов категории <a href="/categories/{{ category.pk }}" style="color: black;">#}
-{#        "{{ category.category_name }}"</a></h5>#}
-{#        <br>#}
-{#        <button><a href="{% url 'unsubscribe' category.id %}" style="text-decoration: none; color: black;#}
-{#">Отписаться</a></button>#}
-{#    {% endif %}#}
-
-    <hr>
+   <hr>
    <!-- Выводим посты, только если они есть с помощью тега if -->
    {% if author_post_context %}
        <table class="table"> <!-- Начинаем описывать таблицу -->

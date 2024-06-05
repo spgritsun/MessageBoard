@@ -113,6 +113,11 @@ class CommentCreate(LoginRequiredMixin, CreateView):
         form.instance.post = Post.objects.get(id=self.kwargs['pk'])
         return super().form_valid(form)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['post_id'] = Post.objects.get(id=self.kwargs['pk']).pk
+        return context
+
 
 class PostDetail(DetailView):
     # Модель всё та же, но мы хотим получать информацию по отдельному посту.
